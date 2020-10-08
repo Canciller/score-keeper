@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 
-import styles from "./SignIn.module.scss";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Alert from "components/Alert";
@@ -13,27 +12,30 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+  },
   title: {
     marginBottom: theme.spacing(1),
   },
   paper: {
     padding: theme.spacing(4),
+    position: "relative",
+    maxWidth: "24rem",
   },
   submit: {
-    margin: theme.spacing(1, 0, 3),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
     padding: theme.spacing(1.5, 0),
   },
   alert: {
     position: "absolute",
-    bottom: '-4rem',
+    bottom: "-4rem",
     left: 0,
-    right: 0
-  }
+    right: 0,
+  },
 }));
 
 const schema = yup.object().shape({
@@ -65,79 +67,55 @@ function SignIn(props) {
 
   return (
     <Grid
-      className={styles.root}
       container
-      justify="center"
       alignItems="center"
+      justify="center"
+      className={classes.root}
     >
-      <div className={styles.container}>
+      <Paper className={classes.paper}>
         {withServerError && (
-          <Alert
-            className={classes.alert}
-            severity="error">{serverError.message}</Alert>
+          <Alert className={classes.alert} severity="error">
+            {serverError.message}
+          </Alert>
         )}
-        <Paper className={classes.paper}>
-          <Typography className={classes.title} component="h1" variant="h5">
-            Ingresar
-          </Typography>
-          <form
-            className={styles.form}
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
+        <Typography className={classes.title} component="h1" variant="h5">
+          Ingresar
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <TextField
+            error={!!errors.username}
+            helperText={errors.username && errors.username.message}
+            name="username"
+            inputRef={register}
+            label="Usuario"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+          />
+          <TextField
+            error={!!errors.password}
+            helperText={errors.password && errors.password.message}
+            name="password"
+            inputRef={register}
+            label="Contraseña"
+            variant="outlined"
+            margin="normal"
+            type="password"
+            required
+            fullWidth
+          />
+          <Button
+            className={classes.submit}
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
           >
-            <TextField
-              error={!!errors.username}
-              helperText={errors.username && errors.username.message}
-              name="username"
-              inputRef={register}
-              label="Usuario"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-            />
-            <TextField
-              error={!!errors.password}
-              helperText={errors.password && errors.password.message}
-              name="password"
-              inputRef={register}
-              label="Contraseña"
-              variant="outlined"
-              margin="normal"
-              type="password"
-              required
-              fullWidth
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="remember"
-                  inputRef={register}
-                  defaultValue={false}
-                  color="primary"
-                />
-              }
-              label="Remember me"
-            />
-            <Button
-              className={classes.submit}
-              variant="contained"
-              color="primary"
-              type="submit"
-              fullWidth
-            >
-              Ingresar
-            </Button>
-          </form>
-          <Grid container>
-            <Grid item>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-          </Grid>
-        </Paper>
-      </div>
+            Ingresar
+          </Button>
+        </form>
+      </Paper>
     </Grid>
   );
 }
