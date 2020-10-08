@@ -22,13 +22,17 @@ const useStyles = makeStyles((theme) => {
 const ListItemWrapper = ({ path, icon, text, onClick, ...props }) => {
   const match = useRouteMatch(path);
   const pathname = match && match.path;
+  const isExact = match && match.isExact;
+
   const history = useHistory();
+
   const Icon = icon;
 
   const onItemClick = (e) => {
     onClick();
 
     if (pathname !== path) history.push(path);
+    else if (!isExact) history.push(path);
   };
 
   return (
