@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     alignItems: "center",
-    padding: theme.spacing(0.5, 2),
+    padding: theme.spacing(0.5, 0.5, 0.5, 2),
   },
   input: {
     flex: 1,

@@ -5,7 +5,7 @@ const Routes = {
   HOME: "/",
   SIGNIN: "/ingresar",
   TOURNAMENTS: "/torneos",
-  SCORES: "/scores",
+  SCORES: "/torneos/:id",
 };
 
 const AppBar = {

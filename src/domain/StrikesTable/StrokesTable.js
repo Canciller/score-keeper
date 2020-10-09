@@ -1,0 +1,150 @@
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import InputBase from "@material-ui/core/InputBase";
+import Divider from "@material-ui/core/Divider";
+import Toolbar from "./Toolbar";
+
+const useStyles = makeStyles((theme) => {
+  return {
+    divider: {
+      marginTop: theme.spacing(0.8),
+    },
+    tableCell: {
+      padding: 0,
+      paddingLeft: "0.2rem",
+      paddingRight: "0.2rem",
+    },
+    tableCellHeader: {
+      padding: 0,
+      paddingRight: "1rem",
+    },
+    inputBase: {
+      padding: 0,
+    },
+  };
+});
+
+function StrokesTable({
+  maxStrokes,
+  strokes,
+  onSave,
+  onRefresh,
+  onDelete,
+  onChange,
+}) {
+  const classes = useStyles();
+
+  const enabled = maxStrokes > 0;
+
+  const isValidHole = (hole) => {
+    if (hole > maxStrokes || hole <= 0) return false;
+    return true;
+  };
+
+  const calculateTotal = () => {
+    if (strokes) {
+      let total = 0;
+      strokes.forEach((stroke) => {
+        if (isValidHole(stroke.hole)) {
+          total += stroke.strokes;
+        }
+      });
+
+      return total;
+    }
+
+    return 0;
+  };
+
+  const handleChange = (strokes) => {
+    if (onChange) onChange(strokes);
+  };
+
+  const headers = [];
+  const addHeader = (title, key) =>
+    headers.push(
+      <TableCell key={key} align="center" className={classes.tableCellHeader}>
+        {title}
+      </TableCell>
+    );
+
+  const inputs = [];
+  const addInput = (hole, value, key) =>
+    inputs.push(
+      <TableCell key={key} className={classes.tableCell}>
+        <InputBase
+          placeholder="0"
+          defaultValue={value}
+          className={classes.inputBase}
+          inputProps={{
+            style: {
+              padding: 0,
+              textAlign: "center",
+            },
+          }}
+          type="number"
+          onChange={(e) =>
+            handleChange({
+              strokes: Number(e.target.value),
+              hole,
+            })
+          }
+        />
+      </TableCell>
+    );
+
+  if (enabled) {
+    const values = new Array(maxStrokes);
+    if (strokes) {
+      strokes.forEach((stroke) => {
+        if (isValidHole(stroke.hole)) {
+          values[stroke.hole - 1] = stroke.strokes;
+        }
+      });
+    }
+
+    for (var i = 1; i <= maxStrokes; ++i) {
+      addHeader(i, "header-" + i);
+      addInput(i, values[i - 1], "input-" + i);
+    }
+  }
+
+  const total = calculateTotal();
+
+  const handleSave = () => {
+    if (onSave) onSave(calculateTotal());
+  };
+
+  return (
+    <div>
+      <Toolbar onDelete={onDelete} onSave={handleSave} onRefresh={onRefresh} />
+      <Divider className={classes.divider} />
+      <TableContainer>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Hoyos</TableCell>
+              {headers}
+              <TableCell align="right">Total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>Golpes</TableCell>
+              {inputs}
+              <TableCell align="right">{total}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}
+
+export default StrokesTable;

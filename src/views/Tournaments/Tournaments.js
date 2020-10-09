@@ -155,47 +155,4 @@ function Tournaments(props) {
   );
 }
 
-/*
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={onMenuClose}
-          >
-            <MenuItem id="delete" onClick={onMenuClose}>
-              <ListItemIcon>
-                <DeleteIcon />
-              </ListItemIcon>
-              <ListItemText primary="Eliminar" />
-            </MenuItem>
-            <MenuItem id="block" onClick={onMenuClose}>
-              <ListItemIcon>
-                {(blocked && <LockOpenIcon />) || <LockIcon />}
-              </ListItemIcon>
-              <ListItemText primary={blocked ? "Desbloquear" : "Bloquear"} />
-            </MenuItem>
-          </Menu>
-          <List>
-            <ListItem
-              disabled={blocked}
-              button
-              dense
-            >
-              <ListItemText
-                secondary="Categoria, Temporada"
-                primary='Torneo 1'
-              >
-              </ListItemText>
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  onClick={onSecondaryActionClick}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-          */
-
 export default Tournaments;
