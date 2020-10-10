@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-function StrikesPaper({
+function StrokesPaper({
   busy,
   player,
   tournament,
@@ -92,4 +92,4 @@ function StrikesPaper({
   );
 }
 
-export default StrikesPaper;
+export default StrokesPaper;

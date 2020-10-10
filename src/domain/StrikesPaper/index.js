@@ -1,3 +1,3 @@
-import StrikesPaper from "./StrikesPaper";
+import StrokesPaper from "./StrokesPaper";
 
-export default StrikesPaper;
+export default StrokesPaper;

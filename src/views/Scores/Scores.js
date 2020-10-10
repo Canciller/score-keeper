@@ -14,7 +14,7 @@ import ToolTip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
-import StrikesPaper from "domain/StrikesPaper";
+import StrokesPaper from "domain/StrikesPaper";
 import { Link as RouterLink } from "react-router-dom";
 import { Routes } from "config";
 import OverflowBox from "components/OverflowBox";
@@ -162,7 +162,7 @@ function Scores(props) {
     setBusy(false);
   }, 1000);
 
-  const maxStrokes = 8;
+  const maxStrokes = 9;
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -272,7 +272,7 @@ function Scores(props) {
           </Paper>
         </div>
         <div className={classes.strikesPaper}>
-          <StrikesPaper
+          <StrokesPaper
             busy={busy}
             player={{
               name: "Jugador",

@@ -19,13 +19,14 @@ const useStyles = makeStyles((theme) => {
       padding: 0,
       paddingLeft: "0.2rem",
       paddingRight: "0.2rem",
+      minWidth: "4rem"
     },
     tableCellHeader: {
       padding: 0,
-      paddingRight: "1rem",
     },
     inputBase: {
       padding: 0,
+      paddingLeft: "1rem"
     },
   };
 });
@@ -79,8 +80,8 @@ function StrokesTable({
     inputs.push(
       <TableCell key={key} className={classes.tableCell}>
         <InputBase
-          placeholder="0"
-          defaultValue={value}
+          placeholder="10"
+          defaultValue={value || 10}
           className={classes.inputBase}
           inputProps={{
             style: {
