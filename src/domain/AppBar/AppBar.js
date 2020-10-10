@@ -6,8 +6,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import ArrowBack from "@material-ui/icons/ArrowBack";
-import Menu from "@material-ui/icons/Menu";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+//import MenuIcon from "@material-ui/icons/Menu";
 import { Routes, AppBar as AppBarConfig } from "config";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +30,7 @@ export default function ({ isAuth, onToggleDrawer }) {
   const location = useLocation();
   const path = location && location.pathname;
 
+  /*
   const showBackArrowIcon = () => {
     if (!path) return false;
     if (history && history.length <= 2) return false;
@@ -41,6 +42,7 @@ export default function ({ isAuth, onToggleDrawer }) {
     if (!path) return false;
     return !AppBarConfig.hideMenuButton[path];
   };
+  */
 
   const showSignInButton = () => {
     if (!path) return false;
@@ -48,11 +50,14 @@ export default function ({ isAuth, onToggleDrawer }) {
   };
 
   const onMenuClick = (e) => {
+    history.goBack();
+    /*
     if (showBackArrowIcon()) {
       history.goBack();
     } else {
       onToggleDrawer();
     }
+    */
   };
 
   const onButtonClick = (e) => {
@@ -66,17 +71,15 @@ export default function ({ isAuth, onToggleDrawer }) {
   return (
     <AppBar className={classes.root}>
       <Toolbar>
-        {showMenuButton() && (
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="back"
-            onClick={onMenuClick}
-          >
-            {(showBackArrowIcon() && <ArrowBack />) || <Menu />}
-          </IconButton>
-        )}
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="back"
+          onClick={onMenuClick}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <Typography variant="h6" className={classes.title}>
           ACGN
         </Typography>

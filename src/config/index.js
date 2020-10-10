@@ -9,12 +9,6 @@ const Routes = {
 };
 
 const AppBar = {
-  showBackArrowIcon: {
-    [Routes.SIGNIN]: true,
-  },
-  hideMenuButton: {
-    [Routes.HOME]: true,
-  },
   hideSignInButton: {
     [Routes.SIGNIN]: true,
   },
