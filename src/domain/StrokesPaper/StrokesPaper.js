@@ -2,11 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import OverflowBox from "components/OverflowBox";
-import Divider from "@material-ui/core/Divider";
 import StageSelect from "domain/StageSelect";
-import List from "@material-ui/core/List";
 import Paper from "@material-ui/core/Paper";
-import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import StrokesTable from "domain/StrokesTable";
 
@@ -29,7 +26,7 @@ const useStyles = makeStyles((theme) => {
     content: {
       flexGrow: 1,
     },
-    player: {
+    marginTop: {
       marginTop: spacing,
     },
   };
@@ -72,12 +69,8 @@ function StrokesPaper({
       </div>
       {enabled && (
         <OverflowBox busy={busy} className={classes.content} spacing={3}>
-          <ListItemText primary={stage.club} />
-          <ListItemText
-            className={classes.player}
-            primary={player.name}
-            secondary={player.category}
-          />
+          <ListItemText primary={player.name} secondary={player.category} />
+          <ListItemText className={classes.marginTop} primary={stage.club} />
           <StrokesTable
             onSave={onStrokesSave}
             onRefresh={onStrokesRefresh}

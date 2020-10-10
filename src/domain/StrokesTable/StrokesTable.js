@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme) => {
       padding: 0,
       paddingLeft: "0.2rem",
       paddingRight: "0.2rem",
-      minWidth: "4rem"
+      minWidth: "4rem",
     },
     tableCellHeader: {
       padding: 0,
     },
     inputBase: {
       padding: 0,
-      paddingLeft: "1rem"
+      paddingLeft: "1rem",
     },
   };
 });

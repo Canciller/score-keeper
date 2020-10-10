@@ -30,6 +30,7 @@ function SearchBar({
   actionIcon,
   onActionClick,
   onSearchClick,
+  hideSearchIcon,
   ...props
 }) {
   const classes = useStyles();
@@ -42,13 +43,15 @@ function SearchBar({
         className={classes.input}
         {...props}
       />
-      <IconButton
-        type="submit"
-        className={classes.icon}
-        onClick={onSearchClick}
-      >
-        <SearchIcon />
-      </IconButton>
+      {!hideSearchIcon && (
+        <IconButton
+          type="submit"
+          className={classes.icon}
+          onClick={onSearchClick}
+        >
+          <SearchIcon />
+        </IconButton>
+      )}
       {Boolean(actionIcon) && (
         <>
           <Divider className={classes.divider} orientation="vertical" />
