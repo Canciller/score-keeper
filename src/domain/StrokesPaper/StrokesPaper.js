@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 import Paper from "@material-ui/core/Paper";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import StrikesTable from "domain/StrikesTable";
+import StrokesTable from "domain/StrokesTable";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -78,7 +78,7 @@ function StrokesPaper({
             primary={player.name}
             secondary={player.category}
           />
-          <StrikesTable
+          <StrokesTable
             onSave={onStrokesSave}
             onRefresh={onStrokesRefresh}
             onDelete={onStrokesDelete}

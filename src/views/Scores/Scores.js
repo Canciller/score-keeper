@@ -1,7 +1,6 @@
 import React, { useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import Paper from "@material-ui/core/Paper";
@@ -14,11 +13,10 @@ import ToolTip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
-import StrokesPaper from "domain/StrikesPaper";
+import StrokesPaper from "domain/StrokesPaper";
 import { Link as RouterLink } from "react-router-dom";
 import { Routes } from "config";
 import OverflowBox from "components/OverflowBox";
-import { act } from "react-dom/test-utils";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -224,9 +222,13 @@ function Scores(props) {
               <Typography className={classes.playersPaperToolbarTitle}>
                 Jugadores
               </Typography>
-              <IconButton>
-                <RefreshIcon />
-              </IconButton>
+              <ToolTip
+                title="Refrescar"
+              >
+                <IconButton>
+                  <RefreshIcon />
+                </IconButton>
+              </ToolTip>
             </div>
             <Divider />
             <OverflowBox className={classes.playersPaperList}>
