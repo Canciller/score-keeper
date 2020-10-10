@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 const schema = yup.object().shape({
   username: yup.string().required("El usuario es requerido."),
   password: yup.string().required("La contraseña es requerida."),
-  remember: yup.boolean(),
 });
 
 function SignIn(props) {

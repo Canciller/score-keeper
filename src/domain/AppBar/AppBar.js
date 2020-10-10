@@ -31,18 +31,18 @@ export default function ({ isAuth, onToggleDrawer }) {
   const path = location && location.pathname;
 
   /*
-  const showBackArrowIcon = () => {
-    if (!path) return false;
-    if (history && history.length <= 2) return false;
-
-    return AppBarConfig.showBackArrowIcon[path];
-  };
-
   const showMenuButton = () => {
     if (!path) return false;
     return !AppBarConfig.hideMenuButton[path];
   };
   */
+
+  const showArrowBackIcon = () => {
+    if (!path) return false;
+    if (history && history.length <= 2) return false;
+
+    return !AppBarConfig.hideArrowBackIcon[path];
+  };
 
   const showSignInButton = () => {
     if (!path) return false;
@@ -71,15 +71,17 @@ export default function ({ isAuth, onToggleDrawer }) {
   return (
     <AppBar className={classes.root}>
       <Toolbar>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          aria-label="back"
-          onClick={onMenuClick}
-        >
-          <ArrowBackIcon />
-        </IconButton>
+        {showArrowBackIcon() && (
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="back"
+            onClick={onMenuClick}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        )}
         <Typography variant="h6" className={classes.title}>
           ACGN
         </Typography>

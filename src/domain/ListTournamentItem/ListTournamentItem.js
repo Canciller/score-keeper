@@ -10,6 +10,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LockIcon from "@material-ui/icons/Lock";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
+import EditIcon from "@material-ui/icons/Edit";
 
 function ListTournamentItem({
   tournament,
@@ -19,12 +20,15 @@ function ListTournamentItem({
   menuLockText,
   menuUnlockText,
   menuDeleteText,
+  menuEditText,
   onClick,
   onLock,
   onDelete,
+  onEdit,
 }) {
   const ACTION_LOCK = "lock",
-    ACTION_DELETE = "delete";
+    ACTION_DELETE = "delete",
+    ACTION_EDIT = "edit";
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -41,6 +45,9 @@ function ListTournamentItem({
         break;
       case ACTION_DELETE:
         if (onDelete) onDelete(tournament);
+        break;
+      case ACTION_EDIT:
+        if (onEdit) onEdit(tournament);
         break;
       default:
         break;
@@ -61,17 +68,23 @@ function ListTournamentItem({
         open={Boolean(anchorEl)}
         onClose={onMenuClose}
       >
-        <MenuItem id={ACTION_DELETE} onClick={onMenuClose}>
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText primary={menuDeleteText} />
-        </MenuItem>
         <MenuItem id={ACTION_LOCK} onClick={onMenuClose}>
           <ListItemIcon>
             {(locked && <LockOpenIcon />) || <LockIcon />}
           </ListItemIcon>
           <ListItemText primary={locked ? menuUnlockText : menuLockText} />
+        </MenuItem>
+        <MenuItem id={ACTION_EDIT} onClick={onMenuClose}>
+          <ListItemIcon>
+            <EditIcon />
+          </ListItemIcon>
+          <ListItemText primary={menuEditText} />
+        </MenuItem>
+        <MenuItem id={ACTION_DELETE} onClick={onMenuClose}>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          <ListItemText primary={menuDeleteText} />
         </MenuItem>
       </Menu>
       <ListItemText secondary={secondaryText} primary={primaryText} />

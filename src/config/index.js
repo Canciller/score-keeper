@@ -5,12 +5,16 @@ const Routes = {
   HOME: "/",
   SIGNIN: "/ingresar",
   TOURNAMENTS: "/torneos",
-  SCORES: "/torneos/:id",
+  TOURNAMENT_CREATE: "/torneos/nuevo",
+  TOURNAMENT_EDIT: "/torneos/editar",
 };
 
 const AppBar = {
   hideSignInButton: {
     [Routes.SIGNIN]: true,
+  },
+  hideArrowBackIcon: {
+    [Routes.HOME]: true,
   },
 };
 
@@ -29,4 +33,9 @@ const Drawer = {
   ],
 };
 
-export { Routes, AppBar, Drawer };
+const api = {
+  url: "http://localhost:3004",
+  prefix: "/api",
+};
+
+export { Routes, AppBar, Drawer, api };

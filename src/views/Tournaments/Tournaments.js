@@ -1,5 +1,5 @@
-import React, { useReducer } from "react";
-import { makeStyles } from "@material-ui/core";
+import React, { useEffect, useReducer, useState } from "react";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
@@ -10,6 +10,7 @@ import SearchBar from "components/SearchBar";
 import ListTournamentItem from "domain/ListTournamentItem";
 import AddIcon from "@material-ui/icons/Add";
 import { Routes } from "config";
+import TournamentService from "services/TournamentService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,11 +41,11 @@ function Tournaments(props) {
 
   function reducer(state, action) {
     switch (action.type) {
-      case "add":
-        return [...state, action.tournament];
-      case "delete":
+      case "SET":
+        return action.tournaments;
+      case "REMOVE":
         return state.filter((tournament) => tournament.id != action.id);
-      case "lock":
+      case "LOCK":
         return state.map((tournament) => {
           if (tournament.id === action.id)
             tournament.locked = !tournament.locked;
@@ -55,57 +56,84 @@ function Tournaments(props) {
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, [
-    {
-      id: 1,
-      description: "Torneo 1",
-      season: "2020",
-      locked: false,
-    },
-    {
-      id: 2,
-      description: "Torneo 2",
-      season: "2020",
-      locked: false,
-    },
-    {
-      id: 3,
-      description: "Torneo 3",
-      season: "2020",
-      locked: false,
-    },
-    {
-      id: 4,
-      description: "Torneo 4",
-      season: "2020",
-      locked: false,
-    },
-    {
-      id: 5,
-      description: "Torneo 5",
-      season: "2020",
-      locked: false,
-    },
-  ]);
+  const [query, setQuery] = useState("");
+  const [busy, setBusy] = useState(true);
+  const [state, dispatch] = useReducer(reducer, null);
 
-  const isNotEmpty = state && state.length > 0;
+  useEffect(() => {
+    TournamentService.getAll()
+      .then((data) => {
+        dispatch({
+          type: "SET",
+          tournaments: data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "SET",
+          tournamets: null,
+        });
+
+        // TODO: Handle getAll error.
+      })
+      .finally(() => {
+        setBusy(false);
+      });
+  }, []);
+
+  const enabled = state && state.length > 0;
 
   const onLock = (tournament) => {
-    dispatch({
-      type: "lock",
-      id: tournament.id,
-    });
+    TournamentService.setLocked(tournament.id, !tournament.locked)
+      .then(() => {
+        dispatch({
+          type: "LOCK",
+          id: tournament.id,
+        });
+      })
+      .catch((err) => {
+        // TODO: Handle lock error.
+      });
   };
 
   const onDelete = (tournament) => {
-    dispatch({
-      type: "delete",
-      id: tournament.id,
+    TournamentService.delete(tournament.id)
+      .then(() => {
+        dispatch({
+          type: "REMOVE",
+          id: tournament.id,
+        });
+      })
+      .catch((err) => {
+        // TODO: Handle delete error.
+      });
+  };
+
+  const goToEdit = (tournament) => {
+    history.push(Routes.TOURNAMENT_EDIT + "/" + tournament.id);
+  };
+
+  const goToCreate = () => {
+    history.push(Routes.TOURNAMENT_CREATE, {
+      name: query,
     });
   };
 
+  const onEdit = (tournament) => {
+    goToEdit(tournament);
+  };
+
   const onClick = (tournament) =>
-    history.push(Routes.TOURNAMENTS + "/" + tournament.id);
+    history.push(Routes.TOURNAMENTS + "/" + tournament.id, tournament);
+
+  const onSearchBarChange = (e) => {
+    const query = e.target.value;
+    setQuery(query);
+  };
+
+  const onAddClick = () => {
+    goToCreate();
+  };
 
   return (
     <Grid
@@ -119,32 +147,39 @@ function Tournaments(props) {
           className={classes.searchBar}
           placeholder="Buscar Torneos"
           actionIcon={AddIcon}
+          onActionClick={onAddClick}
+          onChange={onSearchBarChange}
+          value={query}
         />
         <Paper
           className={clsx(
-            !isNotEmpty && classes.listContainerEmpty,
+            !enabled && classes.listContainerEmpty,
             classes.listContainer
           )}
         >
-          {(isNotEmpty && (
+          {enabled ? (
             <List>
               {state.map((tournament, i) => (
                 <ListTournamentItem
                   menuLockText="Bloquear"
                   menuUnlockText="Desbloquear"
                   menuDeleteText="Eliminar"
+                  menuEditText="Editar"
                   key={i}
                   locked={tournament.locked}
                   tournament={tournament}
-                  primaryText={tournament.description}
+                  primaryText={tournament.name}
                   secondaryText={tournament.season}
                   onLock={onLock}
                   onDelete={onDelete}
                   onClick={onClick}
+                  onEdit={onEdit}
                 />
               ))}
             </List>
-          )) || (
+          ) : busy ? (
+            <CircularProgress />
+          ) : (
             <Typography variant="subtitle1" className={classes.emptyMessage}>
               Presiona + para crear un torneo.
             </Typography>
