@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core";
 import AppBar from "domain/AppBar";
-import Drawer from "domain/Drawer";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -24,17 +23,10 @@ const useStyles = makeStyles((theme) => {
 function Layout({ children }) {
   const classes = useStyles();
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const onToggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
-
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <div className={classes.drawer}>
-        <Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-      </div>
-      <AppBar onToggleDrawer={onToggleDrawer} />
+      <AppBar />
       <div className={classes.toolbar} />
       <div className={classes.content}>{children}</div>
     </div>

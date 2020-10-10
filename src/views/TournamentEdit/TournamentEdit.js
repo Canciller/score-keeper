@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import { Routes } from "config";
+import isAuth from "utils/isAuth";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -65,7 +66,7 @@ const schema = yup.object().shape({
   locked: yup.boolean(),
 });
 
-export default function (props) {
+function TournamentEdit (props) {
   const classes = useStyles();
 
   const params = useParams();
@@ -223,3 +224,5 @@ export default function (props) {
     </div>
   );
 }
+
+export default isAuth(TournamentEdit);

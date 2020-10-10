@@ -10,6 +10,7 @@ import AddIcon from "@material-ui/icons/Add";
 import PlayersPaper from "domain/PlayersPaper";
 import StrokesPaper from "domain/StrokesPaper";
 import { Routes } from "config";
+import isAuth from "utils/isAuth";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -189,4 +190,4 @@ function Scores(props) {
   );
 }
 
-export default Scores;
+export default isAuth(Scores);

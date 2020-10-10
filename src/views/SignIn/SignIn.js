@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
@@ -12,6 +12,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+
+import { AuthContext } from 'context/AuthContext';
+import { useHistory } from "react-router-dom";
+import { Routes } from "config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   alert: {
     position: "absolute",
-    bottom: "-4rem",
+    bottom: "-5rem",
     left: 0,
     right: 0,
   },
@@ -44,22 +48,28 @@ const schema = yup.object().shape({
 });
 
 function SignIn(props) {
-  const [serverError, setServerError] = useState({});
-  const [withServerError, setWithServerError] = useState(false);
+  const history = useHistory();
 
-  useEffect(() => {
-    setServerError({
-      type: "UnauthorizedError",
-      message: "El usuario o contraseña son incorrectos.",
-    });
-  }, [withServerError]);
+  const auth = useContext(AuthContext);
+
+  const [error, setError] = useState(null);
 
   const { register, errors, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data) => {
-    setWithServerError(true);
+    auth.signIn(data)
+      .then(() => {
+        setError(null);
+        history.push(Routes.TOURNAMENTS);
+      })
+      .catch((err) => {
+        if(err.name === 'UnauthorizedError')
+          console.error(err);
+
+        setError(err);
+      })
   };
 
   const classes = useStyles();
@@ -72,9 +82,9 @@ function SignIn(props) {
       className={classes.root}
     >
       <Paper className={classes.paper}>
-        {withServerError && (
+        {error && (
           <Alert className={classes.alert} severity="error">
-            {serverError.message}
+            {error.message}
           </Alert>
         )}
         <Typography className={classes.title} component="h1" variant="h5">

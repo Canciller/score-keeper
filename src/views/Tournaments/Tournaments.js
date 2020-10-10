@@ -11,6 +11,7 @@ import ListTournamentItem from "domain/ListTournamentItem";
 import AddIcon from "@material-ui/icons/Add";
 import { Routes } from "config";
 import TournamentService from "services/TournamentService";
+import isAuth from "utils/isAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -190,4 +191,4 @@ function Tournaments(props) {
   );
 }
 
-export default Tournaments;
+export default isAuth(Tournaments);
