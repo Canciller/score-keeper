@@ -221,7 +221,7 @@ function Scores(props) {
       if(query === '') setPlayersFiltered(players);
       else setPlayersFiltered(players.filter(player => player.firstName.toLowerCase().includes(query.toLocaleLowerCase())));
     }
-  }, [query]);
+  }, [query, players]);
 
   // Get scores
   useEffect(() => {
