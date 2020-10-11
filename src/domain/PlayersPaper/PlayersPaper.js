@@ -75,6 +75,9 @@ export default function PlayersPaper({
         {enabled ? (
           <List>
             {players.map((player, i) => {
+              const name = `${player.firstName} ${player.lastName}`;
+              const category = player.category.description || "Sin categoría";
+
               return (
                 <ListItem
                   key={i}
@@ -82,10 +85,7 @@ export default function PlayersPaper({
                   button
                   dense
                 >
-                  <ListItemText
-                    primary={player.name}
-                    secondary={player.category}
-                  />
+                  <ListItemText primary={name} secondary={category} />
                 </ListItem>
               );
             })}

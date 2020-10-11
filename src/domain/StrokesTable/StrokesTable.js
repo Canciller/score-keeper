@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 function StrokesTable({
+  maxHoles,
   maxStrokes,
   strokes,
   onSave,
@@ -41,19 +42,22 @@ function StrokesTable({
 }) {
   const classes = useStyles();
 
-  const enabled = maxStrokes > 0;
+  const enabled = Boolean(strokes) && maxHoles > 0 && maxStrokes > 0;
 
   const isValidHole = (hole) => {
-    if (hole > maxStrokes || hole <= 0) return false;
+    if (hole > maxHoles || hole <= 0) return false;
     return true;
   };
 
   const calculateTotal = () => {
     if (strokes) {
-      let total = 0;
+      let total = maxHoles * maxStrokes;
       strokes.forEach((stroke) => {
         if (isValidHole(stroke.hole)) {
-          total += stroke.strokes;
+          if (stroke.strokes !== 0) {
+            total -= maxStrokes;
+            total += stroke.strokes;
+          }
         }
       });
 
@@ -80,8 +84,8 @@ function StrokesTable({
     inputs.push(
       <TableCell key={key} className={classes.tableCell}>
         <InputBase
-          placeholder="10"
-          defaultValue={value || 10}
+          placeholder={String(maxStrokes)}
+          value={value || maxStrokes}
           className={classes.inputBase}
           inputProps={{
             style: {
@@ -101,7 +105,7 @@ function StrokesTable({
     );
 
   if (enabled) {
-    const values = new Array(maxStrokes);
+    const values = new Array(maxHoles);
     if (strokes) {
       strokes.forEach((stroke) => {
         if (isValidHole(stroke.hole)) {
@@ -110,7 +114,7 @@ function StrokesTable({
       });
     }
 
-    for (var i = 1; i <= maxStrokes; ++i) {
+    for (var i = 1; i <= maxHoles; ++i) {
       addHeader(i, "header-" + i);
       addInput(i, values[i - 1], "input-" + i);
     }

@@ -29,7 +29,7 @@ export default function () {
 
   const location = useLocation();
   const path = location && location.pathname;
-  
+
   const auth = useContext(AuthContext);
 
   const isAuth = Boolean(auth.user);
@@ -76,7 +76,11 @@ export default function () {
           ACGN
         </Typography>
         {showAuthButton() && (
-          <Button color="inherit" variant="outlined" onClick={handleAuthButtonClick}>
+          <Button
+            color="inherit"
+            variant="outlined"
+            onClick={handleAuthButtonClick}
+          >
             {isAuth ? "Salir" : "Ingresar"}
           </Button>
         )}

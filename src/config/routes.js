@@ -2,11 +2,11 @@ import React from "react";
 import Home from "views/Home";
 import Tournaments from "views/Tournaments";
 import TournamentEdit from "views/TournamentEdit";
+import PlayerEdit from "views/PlayerEdit";
 import Scores from "views/Scores";
 import SignIn from "views/SignIn";
 import NotFound from "views/NotFound";
 import { Routes } from "config";
-import { Route } from "react-router-dom";
 
 var route = (path, Component) => {
   return {
@@ -22,5 +22,7 @@ export default [
   route(Routes.TOURNAMENT_CREATE, TournamentEdit),
   route(Routes.TOURNAMENT_EDIT + "/:id", TournamentEdit),
   route(Routes.TOURNAMENTS + "/:id", Scores),
+  route(Routes.PLAYERS_EDIT + "/:id", PlayerEdit),
+  route(Routes.PLAYERS_CREATE, PlayerEdit),
   route("*", NotFound),
 ];

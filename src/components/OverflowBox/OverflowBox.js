@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => {
@@ -19,11 +19,15 @@ const useStyles = makeStyles((theme) => {
       overflow: "auto",
       padding: (props) => theme.spacing(props.spacing || 0),
     },
-    busy: {
+    center: {
       height: "100%",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+    },
+    message: {
+      color: theme.palette.text.disabled,
+      userSelect: "none",
     },
   };
 });
@@ -36,6 +40,7 @@ function OverflowBox({
   width,
   spacing,
   busy,
+  message,
   ...props
 }) {
   const classes = useStyles({
@@ -54,8 +59,16 @@ function OverflowBox({
         className={clsx(contentProps.className, classes.content)}
       >
         {busy ? (
-          <div className={classes.busy}>
+          <div className={classes.center}>
             <CircularProgress />
+          </div>
+        ) : message ? (
+          <div className={classes.center}>
+            {typeof message === "string" ? (
+              <Typography className={classes.message}>{message}</Typography>
+            ) : (
+              message
+            )}
           </div>
         ) : (
           children

@@ -16,10 +16,9 @@ function StageSelect({
 
   const handleChange = (e) => {
     if (isNotEmpty && onChange) {
-      const found = stages.find(
-        (stage) => stage[stageProperty] === e.target.value
-      );
-      onChange(found);
+      const index = e.target.value;
+      const found = stages[index];
+      onChange(found, index);
     }
   };
 
@@ -36,7 +35,7 @@ function StageSelect({
         stages.map((stage, i) => {
           const value = stage[stageProperty];
           return (
-            <MenuItem key={value} value={value}>
+            <MenuItem key={i} value={i}>
               {stageText ? `${stageText} ${value}` : value}
             </MenuItem>
           );

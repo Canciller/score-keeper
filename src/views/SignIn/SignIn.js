@@ -12,8 +12,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { AuthContext } from 'context/AuthContext';
+import { AuthContext } from "context/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Routes } from "config";
 
@@ -29,10 +30,20 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     maxWidth: "24rem",
   },
-  submit: {
+  submitWrapper: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
+    position: "relative",
+  },
+  submit: {
     padding: theme.spacing(1.5, 0),
+  },
+  submitProgress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
   },
   alert: {
     position: "absolute",
@@ -58,21 +69,27 @@ function SignIn(props) {
     resolver: yupResolver(schema),
   });
 
+  const [busy, setBusy] = useState(false);
+
   const onSubmit = (data) => {
-    auth.signIn(data)
+    setBusy(true);
+
+    auth
+      .signIn(data)
       .then(() => {
-        setError(null);
         history.push(Routes.TOURNAMENTS);
       })
       .catch((err) => {
-        if(err.name === 'UnauthorizedError')
-          console.error(err);
+        //if (err.name === "UnauthorizedError") console.error(err);
 
         setError(err);
-      })
+        setBusy(false);
+      });
   };
 
   const classes = useStyles();
+
+  if (auth.user) history.push(Routes.TOURNAMENTS);
 
   return (
     <Grid
@@ -114,15 +131,21 @@ function SignIn(props) {
             required
             fullWidth
           />
-          <Button
-            className={classes.submit}
-            variant="contained"
-            color="primary"
-            type="submit"
-            fullWidth
-          >
-            Ingresar
-          </Button>
+          <div className={classes.submitWrapper}>
+            {busy && (
+              <CircularProgress size={24} className={classes.submitProgress} />
+            )}
+            <Button
+              disabled={busy}
+              className={classes.submit}
+              variant="contained"
+              color="primary"
+              type="submit"
+              fullWidth
+            >
+              Ingresar
+            </Button>
+          </div>
         </form>
       </Paper>
     </Grid>

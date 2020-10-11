@@ -7,6 +7,9 @@ const Routes = {
   TOURNAMENTS: "/torneos",
   TOURNAMENT_CREATE: "/torneos/nuevo",
   TOURNAMENT_EDIT: "/torneos/editar",
+  PLAYERS: "/jugadores",
+  PLAYERS_CREATE: "/jugadores/nuevo",
+  PLAYERS_EDIT: "/jugadores/editar",
 };
 
 const AppBar = {
@@ -14,7 +17,7 @@ const AppBar = {
     [Routes.SIGNIN]: true,
   },
   hideArrowBackIcon: {
-    [Routes.HOME]: true,
+    //[Routes.HOME]: true,
   },
 };
 
@@ -34,7 +37,7 @@ const Drawer = {
 };
 
 const api = {
-  url: "http://localhost:3004",
+  url: "https://score-keeper-api.herokuapp.com",
   prefix: "/api",
 };
 

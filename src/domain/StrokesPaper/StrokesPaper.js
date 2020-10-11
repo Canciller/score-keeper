@@ -48,8 +48,12 @@ function StrokesPaper({
 }) {
   const classes = useStyles();
 
-  const stage = stages && stages.find((el) => el.stage === stageSelected);
+  const stage = stages && stages[stageSelected];
   const enabled = Boolean(player) && Boolean(stage) && Boolean(tournament);
+
+  const name = enabled && `${player.firstName} ${player.lastName}`;
+  const category = enabled && (player.category.description || "Sin categoría");
+  const club = enabled && (player.club.name || "Sin club");
 
   return (
     <Paper {...props} className={clsx(props.className, classes.root)}>
@@ -59,24 +63,25 @@ function StrokesPaper({
           className={classes.stageSelect}
           label="Etapa"
           stageText="Etapa"
-          stageProperty="stage"
+          stageProperty="stageNumber"
           stageSelected={stageSelected}
           stages={stages}
-          onChange={(stage) => {
-            if (onStageChange) onStageChange(stage);
+          onChange={(stage, index) => {
+            if (onStageChange) onStageChange(stage, index);
           }}
         />
       </div>
       {enabled && (
         <OverflowBox busy={busy} className={classes.content} spacing={3}>
-          <ListItemText primary={player.name} secondary={player.category} />
-          <ListItemText className={classes.marginTop} primary={stage.club} />
+          <ListItemText primary={name} secondary={category} />
+          <ListItemText className={classes.marginTop} primary={club} />
           <StrokesTable
             onSave={onStrokesSave}
             onRefresh={onStrokesRefresh}
             onDelete={onStrokesDelete}
             onChange={onStrokesChange}
             strokes={strokes}
+            maxHoles={tournament.maxHoles}
             maxStrokes={tournament.maxStrokes}
           />
         </OverflowBox>

@@ -12,7 +12,25 @@ export default class {
     this._url = `${api.url}${api.prefix}${resource}`;
   }
 
+  setToken(token) {
+    if (!token) {
+      this.clearToken();
+    } else {
+      localStorage.setItem("token", token);
+    }
+  }
+
+  getToken() {
+    return localStorage.getItem("token");
+  }
+
+  clearToken() {
+    localStorage.removeItem("token");
+  }
+
   api(endpoint) {
+    const token = this.getToken();
+
     const http = async (method, endpoint, body, options) => {
       let opts = {};
       if (options) opts = options;
@@ -24,6 +42,13 @@ export default class {
         opts.headers = {
           Accept: "application/json",
           "Content-Type": "application/json",
+        };
+      }
+
+      if (token) {
+        opts.headers = {
+          ...opts.headers,
+          Authorization: `Bearer ${token}`,
         };
       }
 

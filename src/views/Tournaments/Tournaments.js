@@ -49,7 +49,7 @@ function Tournaments(props) {
       case "LOCK":
         return state.map((tournament) => {
           if (tournament.id === action.id)
-            tournament.locked = !tournament.locked;
+            tournament.blocked = !tournament.blocked;
           return tournament;
         });
       default:
@@ -85,7 +85,7 @@ function Tournaments(props) {
   const enabled = state && state.length > 0;
 
   const onLock = (tournament) => {
-    TournamentService.setLocked(tournament.id, !tournament.locked)
+    TournamentService.setLocked(tournament.id, !tournament.blocked)
       .then(() => {
         dispatch({
           type: "LOCK",
@@ -167,7 +167,7 @@ function Tournaments(props) {
                   menuDeleteText="Eliminar"
                   menuEditText="Editar"
                   key={i}
-                  locked={tournament.locked}
+                  locked={tournament.blocked}
                   tournament={tournament}
                   primaryText={tournament.name}
                   secondaryText={tournament.season}

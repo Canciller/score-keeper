@@ -5,18 +5,16 @@ import OverflowBox from "components/OverflowBox";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
-import SaveIcon from "@material-ui/icons/Save";
 import TournamentService from "services/TournamentService";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import { Routes } from "config";
 import isAuth from "utils/isAuth";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -52,21 +50,33 @@ const useStyles = makeStyles((theme) => {
       marginTop: -12,
       marginLeft: -12,
     },
+    checkbox: {
+      display: "flex",
+      alignItems: "center",
+    },
+    invisible: {
+      position: "absolute",
+      height: 0,
+      width: 0,
+      top: 0,
+      left: 0,
+      visibility: "hidden",
+    },
   };
 });
 
 const schema = yup.object().shape({
   name: yup.string().required("El nombre es requerido."),
   season: yup.string().required("La temporada es requerida."),
-  maxStages: yup
+  stages: yup
     .number()
     .typeError("El número de etapas es requerido.")
     .required("El número de etapas es requerido.")
     .positive("El número de etapas no puede ser menor a uno."),
-  locked: yup.boolean(),
+  blocked: yup.boolean(),
 });
 
-function TournamentEdit (props) {
+function TournamentEdit(props) {
   const classes = useStyles();
 
   const params = useParams();
@@ -80,8 +90,8 @@ function TournamentEdit (props) {
   const [tournament, setTournament] = useState({
     name: "",
     season: "",
-    maxStages: 1,
-    locked: false,
+    stages: 1,
+    blocked: false,
   });
 
   useEffect(() => {
@@ -123,10 +133,11 @@ function TournamentEdit (props) {
 
     method(data)
       .then((data) => {
-        if(!id)
-          history.push(Routes.TOURNAMENTS + "/" + data.id);
-        else
-          history.push(Routes.TOURNAMENTS);
+        if (!id) history.push(Routes.TOURNAMENTS + "/" + data.id);
+        else {
+          // TODO: Handle edit success.
+          setSaving(false);
+        }
       })
       .catch((err) => {
         // TODO: Handle create error.
@@ -149,7 +160,7 @@ function TournamentEdit (props) {
       ) : (
         <OverflowBox component={Paper} height="100%" spacing={2.5}>
           <Typography variant="h6" className={classes.title}>
-            {!id ? "Crear nuevo torneo" : "Editar torneo"}
+            {!id ? "Crear torneo" : "Editar torneo"}
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <TextField
@@ -179,27 +190,32 @@ function TournamentEdit (props) {
               required
             />
             <TextField
-              error={!!errors.maxStages}
-              helperText={errors.maxStages && errors.maxStages.message}
+              error={!!errors.stages}
+              helperText={errors.stages && errors.stages.message}
               disabled={disabled}
-              className={classes.control}
+              className={clsx(
+                classes.control,
+                Boolean(id) && classes.invisible
+              )}
               inputRef={register}
               type="number"
-              defaultValue={tournament.maxStages}
-              name="maxStages"
+              defaultValue={tournament.stages}
+              name="stages"
               fullWidth
               label="Número de etapas"
               variant="outlined"
               required
             />
-            <Switch
-              inputRef={register}
-              name="locked"
-              disabled={disabled}
-              className={classes.control}
-              defaultChecked={tournament.locked}
-              color="primary"
-            />
+            <div className={clsx(classes.control, classes.checkbox)}>
+              <Typography>Bloqueado</Typography>
+              <Switch
+                inputRef={register}
+                name="blocked"
+                disabled={disabled}
+                defaultChecked={tournament.blocked}
+                color="primary"
+              />
+            </div>
             <div className={classes.submitWrapper}>
               <Button
                 disabled={saving}
