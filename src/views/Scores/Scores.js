@@ -14,18 +14,11 @@ import isAuth from "utils/isAuth";
 import PlayerService from "services/PlayerService";
 import TournamentService from "services/TournamentService";
 import clsx from "clsx";
-import ScoresService from "services/ScoresService";
+import ScoreService from "services/ScoreService";
+import { act } from "react-dom/test-utils";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
-
-  const container = {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  };
 
   return {
     root: {
@@ -99,21 +92,21 @@ function Scores(props) {
       case "SET":
         return action.strokes;
       case "CHANGE": {
-        const hole = action.hole,
-          strokes = action.strokes;
+        const holeNumber = action.hole,
+          stroke = action.strokes;
 
-        if (hole > maxHoles) return state;
+        if (holeNumber > maxHoles) return state;
 
         const newState = state.slice();
-        const index = state.findIndex((stroke) => stroke.hole === hole);
+        const index = state.findIndex((stroke) => stroke.holeNumber === holeNumber);
 
         if (index >= 0) {
-          newState[index].strokes = strokes;
+          newState[index].stroke = stroke;
           return newState;
         } else {
           newState.push({
-            hole,
-            strokes,
+            holeNumber,
+            stroke,
           });
 
           return newState;
@@ -133,7 +126,7 @@ function Scores(props) {
     const playerId = player.id;
     const stageId = stages[stageSelected].id;
 
-    ScoresService.get(playerId, stageId)
+    ScoreService.get(playerId, stageId)
       .then((scores) => {
         setScoreId(scores.id);
 
@@ -154,9 +147,13 @@ function Scores(props) {
   };
 
   const onStrokesSave = () => {
-    ScoresService.save(scoreId, {
-      player: player.id,
-      stage: stages[stageSelected].id,
+    ScoreService.save(scoreId, {
+      player: {
+        id: player.id
+      },
+      stage: {
+        id: stages[stageSelected].id,
+      },
       strokes,
     })
       .then(() => {})
@@ -168,11 +165,15 @@ function Scores(props) {
   // All players
   const [playersBusy, setPlayersBusy] = useState(true);
   const [players, setPlayers] = useState(null);
+  const [playersFiltered, setPlayersFiltered] = useState(null);
   const getAllPlayers = () => {
     setPlayersBusy(true);
 
     PlayerService.getAll()
-      .then((players) => setPlayers(players))
+      .then((players) => {
+        setPlayers(players);
+        setPlayersFiltered(players);
+      })
       .catch((err) => {
         // TODO: Handle getAll error.
         setPlayers(null);
@@ -215,6 +216,13 @@ function Scores(props) {
     getTournament();
   }, []);
 
+  useEffect(() => {
+    if(players) {
+      if(query === '') setPlayersFiltered(players);
+      else setPlayersFiltered(players.filter(player => player.firstName.toLowerCase().includes(query.toLocaleLowerCase())));
+    }
+  }, [query]);
+
   // Get scores
   useEffect(() => {
     getPlayerScores();
@@ -231,7 +239,6 @@ function Scores(props) {
   const name = tournament.name;
   const season = tournament.season;
   const title = `${name} ${season}`;
-
 
   return (
     <div className={classes.root}>
@@ -258,7 +265,7 @@ function Scores(props) {
           <PlayersPaper
             emptyMessage="Presiona + para agregar un jugador."
             busy={playersBusy}
-            players={players}
+            players={playersFiltered}
             onClickPlayer={onClickPlayer}
             onRefresh={() => {
               getAllPlayers();

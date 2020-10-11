@@ -52,6 +52,9 @@ function Tournaments(props) {
             tournament.blocked = !tournament.blocked;
           return tournament;
         });
+      case "FILTER":
+        const query = action.query;
+        return action.original.filter((tournament) => tournament.name.toLowerCase().includes(query));
       default:
         return state;
     }
@@ -60,10 +63,12 @@ function Tournaments(props) {
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(true);
   const [state, dispatch] = useReducer(reducer, null);
+  const [copy, setCopy] = useState(null);
 
   useEffect(() => {
     TournamentService.getAll()
       .then((data) => {
+        setCopy(data.slice());
         dispatch({
           type: "SET",
           tournaments: data,
@@ -129,6 +134,11 @@ function Tournaments(props) {
 
   const onSearchBarChange = (e) => {
     const query = e.target.value;
+    dispatch({
+      type: "FILTER",
+      query: query.toLowerCase(),
+      original: copy
+    });
     setQuery(query);
   };
 

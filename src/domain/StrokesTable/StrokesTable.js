@@ -53,10 +53,10 @@ function StrokesTable({
     if (strokes) {
       let total = maxHoles * maxStrokes;
       strokes.forEach((stroke) => {
-        if (isValidHole(stroke.hole)) {
-          if (stroke.strokes !== 0) {
+        if (isValidHole(stroke.holeNumber)) {
+          if (stroke.stroke !== 0) {
             total -= maxStrokes;
-            total += stroke.strokes;
+            total += stroke.stroke;
           }
         }
       });
@@ -108,8 +108,8 @@ function StrokesTable({
     const values = new Array(maxHoles);
     if (strokes) {
       strokes.forEach((stroke) => {
-        if (isValidHole(stroke.hole)) {
-          values[stroke.hole - 1] = stroke.strokes;
+        if (isValidHole(stroke.holeNumber)) {
+          values[stroke.holeNumber - 1] = stroke.stroke;
         }
       });
     }

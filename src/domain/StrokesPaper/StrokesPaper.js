@@ -55,6 +55,10 @@ function StrokesPaper({
   const category = enabled && (player.category.description || "Sin categoría");
   const club = enabled && (player.club.name || "Sin club");
 
+  const maxHoles = tournament.holes;
+  //const maxStrokes = tournament.max_strokes;
+  const maxStrokes = 10;
+
   return (
     <Paper {...props} className={clsx(props.className, classes.root)}>
       <div className={classes.toolbar}>
@@ -81,8 +85,8 @@ function StrokesPaper({
             onDelete={onStrokesDelete}
             onChange={onStrokesChange}
             strokes={strokes}
-            maxHoles={tournament.maxHoles}
-            maxStrokes={tournament.maxStrokes}
+            maxHoles={maxHoles}
+            maxStrokes={maxStrokes}
           />
         </OverflowBox>
       )}
