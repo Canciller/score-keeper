@@ -15,7 +15,7 @@ const Routes = {
 const AppBar = {
   hideSignInButton: {
     [Routes.SIGNIN]: true,
-    [Routes.HOME]: true
+    [Routes.HOME]: true,
   },
   hideArrowBackIcon: {
     //[Routes.HOME]: true,

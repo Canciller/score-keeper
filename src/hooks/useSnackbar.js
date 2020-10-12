@@ -1,23 +1,22 @@
-import React from 'react';
-import { useSnackbar } from 'notistack';
+import React from "react";
+import { useSnackbar } from "notistack";
 
-export default function() {
+export default function () {
   const { enqueueSnackbar } = useSnackbar();
 
-  const message = (msg, variant = 'default') => {
-    if(msg instanceof Object)
-      msg = msg.message;
+  const message = (msg, variant = "default") => {
+    if (msg instanceof Object) msg = msg.message;
 
-    if(msg) {
+    if (msg) {
       enqueueSnackbar(msg, {
-        variant
+        variant,
       });
     }
-  }
+  };
 
   return {
     message,
-    error: err => message(err, 'error'),
-    success: msg => message(msg, 'success'),
-  }
+    error: (err) => message(err, "error"),
+    success: (msg) => message(msg, "success"),
+  };
 }

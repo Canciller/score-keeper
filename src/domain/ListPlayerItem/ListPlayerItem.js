@@ -12,22 +12,18 @@ import LockIcon from "@material-ui/icons/Lock";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import EditIcon from "@material-ui/icons/Edit";
 
-function ListTournamentItem({
-  tournament,
+function ListPlayerItem({
+  player,
   locked,
   primaryText,
   secondaryText,
-  menuLockText,
-  menuUnlockText,
   menuDeleteText,
   menuEditText,
   onClick,
-  onLock,
   onDelete,
   onEdit,
 }) {
-  const ACTION_LOCK = "lock",
-    ACTION_DELETE = "delete",
+  const ACTION_DELETE = "delete",
     ACTION_EDIT = "edit";
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -40,14 +36,11 @@ function ListTournamentItem({
     e.stopPropagation();
 
     switch (e.currentTarget.id) {
-      case ACTION_LOCK:
-        if (onLock) onLock(tournament);
-        break;
       case ACTION_DELETE:
-        if (onDelete) onDelete(tournament);
+        if (onDelete) onDelete(player);
         break;
       case ACTION_EDIT:
-        if (onEdit) onEdit(tournament);
+        if (onEdit) onEdit(player);
         break;
       default:
         break;
@@ -57,7 +50,7 @@ function ListTournamentItem({
   };
 
   const handleClick = () => {
-    if (onClick) onClick(tournament);
+    if (onClick) onClick(player);
   };
 
   return (
@@ -91,13 +84,4 @@ function ListTournamentItem({
   );
 }
 
-export default ListTournamentItem;
-
-/*
-        <MenuItem id={ACTION_LOCK} onClick={onMenuClose}>
-          <ListItemIcon>
-            {(locked && <LockOpenIcon />) || <LockIcon />}
-          </ListItemIcon>
-          <ListItemText primary={locked ? menuUnlockText : menuLockText} />
-        </MenuItem>
-        */
+export default ListPlayerItem;

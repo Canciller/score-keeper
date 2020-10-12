@@ -8,7 +8,6 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = ({ children }) => {
-
   const token = AuthService.getToken();
   let initialState = null;
 

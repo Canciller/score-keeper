@@ -11,6 +11,7 @@ import List from "@material-ui/core/List";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import OverflowBox from "components/OverflowBox";
+import ListPlayerItem from "domain/ListPlayerItem";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -48,6 +49,7 @@ export default function PlayersPaper({
   className,
   onRefresh,
   onClickPlayer,
+  onDeletePlayer,
   emptyMessage,
   busy,
   players,
@@ -58,6 +60,10 @@ export default function PlayersPaper({
 
   const handleClickPlayer = (player) => {
     if (onClickPlayer) onClickPlayer(player);
+  };
+
+  const handleDeletePlayer = (player) => {
+    if (onDeletePlayer) onDeletePlayer(player);
   };
 
   return (
@@ -79,14 +85,16 @@ export default function PlayersPaper({
               const category = player.category.description || "Sin categoría";
 
               return (
-                <ListItem
+                <ListPlayerItem
                   key={i}
-                  onClick={() => handleClickPlayer(player)}
-                  button
-                  dense
-                >
-                  <ListItemText primary={name} secondary={category} />
-                </ListItem>
+                  player={player}
+                  onClick={handleClickPlayer}
+                  primaryText={name}
+                  secondaryText={category}
+                  menuDeleteText="Eliminar"
+                  menuEditText="Editar"
+                  onDelete={handleDeletePlayer}
+                />
               );
             })}
           </List>

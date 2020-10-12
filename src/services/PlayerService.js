@@ -32,7 +32,9 @@ class PlayerService extends APIService {
 
     const res = await this.api().post(body);
     if (!res.success)
-      throw new Error(res.message || "Ha ocurrido un problema al crear el jugador.");
+      throw new Error(
+        res.message || "Ha ocurrido un problema al crear el jugador."
+      );
   }
 
   async update(id, body) {

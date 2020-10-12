@@ -15,7 +15,7 @@ import PlayerService from "services/PlayerService";
 import TournamentService from "services/TournamentService";
 import clsx from "clsx";
 import ScoreService from "services/ScoreService";
-import useSnackbar from 'hooks/useSnackbar';
+import useSnackbar from "hooks/useSnackbar";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -100,7 +100,9 @@ function Scores(props) {
         if (holeNumber > maxHoles) return state;
 
         const newState = state.slice();
-        const index = state.findIndex((stroke) => stroke.holeNumber === holeNumber);
+        const index = state.findIndex(
+          (stroke) => stroke.holeNumber === holeNumber
+        );
 
         if (index >= 0) {
           newState[index].stroke = stroke;
@@ -153,7 +155,7 @@ function Scores(props) {
   const onStrokesSave = () => {
     ScoreService.save(scoreId, {
       player: {
-        id: player.id
+        id: player.id,
       },
       stage: {
         id: stages[stageSelected].id,
@@ -161,7 +163,7 @@ function Scores(props) {
       strokes,
     })
       .then(() => {
-        snackbar.success('Score guardado exitosamente.');
+        snackbar.success("Score guardado exitosamente.");
       })
       .catch((err) => {
         snackbar.error(err);
@@ -225,12 +227,15 @@ function Scores(props) {
   }, []);
 
   useEffect(() => {
-    if(players) {
-      if(query === '') setPlayersFiltered(players);
-      else setPlayersFiltered(players.filter(player => {
-        const name = `${player.firstName} ${player.lastName}`.toLowerCase();
-        return name.includes(query.toLowerCase());
-      }))
+    if (players) {
+      if (query === "") setPlayersFiltered(players);
+      else
+        setPlayersFiltered(
+          players.filter((player) => {
+            const name = `${player.firstName} ${player.lastName}`.toLowerCase();
+            return name.includes(query.toLowerCase());
+          })
+        );
     }
   }, [query, players]);
 
@@ -258,9 +263,7 @@ function Scores(props) {
         <Link component={RouterLink} to={Routes.TOURNAMENTS}>
           Torneos
         </Link>
-        {title &&
-          <Typography>{title}</Typography>
-        }
+        {title && <Typography>{title}</Typography>}
       </Breadcrumbs>
 
       {/* Content */}

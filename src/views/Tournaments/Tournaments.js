@@ -56,7 +56,9 @@ function Tournaments(props) {
         });
       case "FILTER":
         const query = action.query;
-        return action.original.filter((tournament) => tournament.name.toLowerCase().includes(query));
+        return action.original.filter((tournament) =>
+          tournament.name.toLowerCase().includes(query)
+        );
       default:
         return state;
     }
@@ -139,7 +141,7 @@ function Tournaments(props) {
     dispatch({
       type: "FILTER",
       query: query.toLowerCase(),
-      original: copy
+      original: copy,
     });
     setQuery(query);
   };

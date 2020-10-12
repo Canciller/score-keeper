@@ -137,7 +137,7 @@ function TournamentEdit(props) {
       .then((data) => {
         if (!id) history.push(Routes.TOURNAMENTS + "/" + data.id);
         else {
-          snackbar.success('Torneo guardado exitosamente.');
+          snackbar.success("Torneo guardado exitosamente.");
           setSaving(false);
         }
       })
@@ -234,7 +234,6 @@ function TournamentEdit(props) {
 }
 
 export default isAuth(TournamentEdit);
-
 
 /*
             <div className={clsx(classes.control, classes.checkbox)}>

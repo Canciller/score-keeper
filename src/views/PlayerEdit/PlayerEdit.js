@@ -84,7 +84,7 @@ function PlayerEdit(props) {
         .then(() => {
           history.goBack();
         })
-        .catch(err => {
+        .catch((err) => {
           snackbar.error(err);
           setSaving(false);
         });
