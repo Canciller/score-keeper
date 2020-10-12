@@ -1,5 +1,4 @@
 import React from "react";
-import Home from "views/Home";
 import Tournaments from "views/Tournaments";
 import TournamentEdit from "views/TournamentEdit";
 import PlayerEdit from "views/PlayerEdit";

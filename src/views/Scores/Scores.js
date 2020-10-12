@@ -15,7 +15,7 @@ import PlayerService from "services/PlayerService";
 import TournamentService from "services/TournamentService";
 import clsx from "clsx";
 import ScoreService from "services/ScoreService";
-import { act } from "react-dom/test-utils";
+import useSnackbar from 'hooks/useSnackbar';
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -55,6 +55,8 @@ const useStyles = makeStyles((theme) => {
 });
 
 function Scores(props) {
+  const snackbar = useSnackbar();
+
   const classes = useStyles();
 
   const history = useHistory();
@@ -72,7 +74,7 @@ function Scores(props) {
     TournamentService.get(id)
       .then((tournament) => setTournament(tournament))
       .catch((err) => {
-        // TODO: Handle get error.
+        snackbar.error(err);
       })
       .finally(() => {
         setTournamentBusy(false);
@@ -136,7 +138,9 @@ function Scores(props) {
         });
       })
       .catch((err) => {
-        // TODO: Handle get error.
+        // TODO: Improve get error.
+        snackbar.error(err);
+
         setScoreId(null);
         dispatch({
           type: "SET",
@@ -156,9 +160,11 @@ function Scores(props) {
       },
       strokes,
     })
-      .then(() => {})
+      .then(() => {
+        snackbar.success('Score guardado exitosamente.');
+      })
       .catch((err) => {
-        // TODO: Handle create error.
+        snackbar.error(err);
       });
   };
 
@@ -175,7 +181,8 @@ function Scores(props) {
         setPlayersFiltered(players);
       })
       .catch((err) => {
-        // TODO: Handle getAll error.
+        // TODO: Improve getAll error.
+        snackbar.error(err);
         setPlayers(null);
       })
       .finally(() => {
@@ -191,7 +198,8 @@ function Scores(props) {
     PlayerService.get(id)
       .then((player) => setPlayer(player))
       .catch((err) => {
-        // TODO: Handle get error.
+        // TODO: Improve get error.
+        snackbar.error(err);
         setPlayer(null);
       })
       .finally(() => {
@@ -236,9 +244,9 @@ function Scores(props) {
     );
 
   // Tournament
-  const name = tournament.name;
-  const season = tournament.season;
-  const title = `${name} ${season}`;
+  const name = tournament && tournament.name;
+  const season = tournament && tournament.season;
+  const title = tournament && `${name} ${season}`;
 
   return (
     <div className={classes.root}>
@@ -247,7 +255,9 @@ function Scores(props) {
         <Link component={RouterLink} to={Routes.TOURNAMENTS}>
           Torneos
         </Link>
-        <Typography>{title}</Typography>
+        {title &&
+          <Typography>{title}</Typography>
+        }
       </Breadcrumbs>
 
       {/* Content */}

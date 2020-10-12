@@ -27,6 +27,7 @@ import CategoryService from "services/CategoryService";
 import ClubService from "services/ClubService";
 import { InvertColorsOff } from "@material-ui/icons";
 import PlayerService from "services/PlayerService";
+import useSnackbar from "hooks/useSnackbar";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -48,6 +49,8 @@ const schema = yup.object().shape({
 });
 
 function PlayerEdit(props) {
+  const snackbar = useSnackbar();
+
   const classes = useStyles();
 
   const history = useHistory();
@@ -82,7 +85,7 @@ function PlayerEdit(props) {
           history.goBack();
         })
         .catch(err => {
-          // TODO: Handle create error.
+          snackbar.error(err);
           setSaving(false);
         });
     }
@@ -115,13 +118,13 @@ function PlayerEdit(props) {
     CategoryService.getAll()
       .then((categories) => setCategories(categories))
       .catch((err) => {
-        // TODO: Handle getAll error.
+        snackbar.error(err);
       });
 
     ClubService.getAll()
       .then((clubs) => setClubs(clubs))
       .catch((err) => {
-        // TODO: Handle getAll error.
+        snackbar.error(err);
       });
   }, []);
 

@@ -8,6 +8,7 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = ({ children }) => {
+
   const token = AuthService.getToken();
   let initialState = null;
 
@@ -22,7 +23,6 @@ const AuthProvider = ({ children }) => {
 
       return user;
     } catch (err) {
-      // TODO: Handle signIn error.
       setUser(null);
       throw err;
     }

@@ -12,6 +12,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { Routes } from "config";
 import TournamentService from "services/TournamentService";
 import isAuth from "utils/isAuth";
+import useSnackbar from "hooks/useSnackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Tournaments(props) {
+  const snackbar = useSnackbar();
   const classes = useStyles();
   const history = useHistory();
 
@@ -80,7 +82,7 @@ function Tournaments(props) {
           tournamets: null,
         });
 
-        // TODO: Handle getAll error.
+        snackbar.error(err);
       })
       .finally(() => {
         setBusy(false);
@@ -98,7 +100,7 @@ function Tournaments(props) {
         });
       })
       .catch((err) => {
-        // TODO: Handle lock error.
+        snackbar.error(err);
       });
   };
 
@@ -111,7 +113,7 @@ function Tournaments(props) {
         });
       })
       .catch((err) => {
-        // TODO: Handle delete error.
+        snackbar.error(err);
       });
   };
 

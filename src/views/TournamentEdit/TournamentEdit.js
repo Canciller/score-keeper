@@ -15,6 +15,7 @@ import * as yup from "yup";
 import { Routes } from "config";
 import isAuth from "utils/isAuth";
 import clsx from "clsx";
+import useSnackbar from "hooks/useSnackbar";
 
 const useStyles = makeStyles((theme) => {
   const spacing = theme.spacing(2);
@@ -77,6 +78,7 @@ const schema = yup.object().shape({
 });
 
 function TournamentEdit(props) {
+  const snackbar = useSnackbar();
   const classes = useStyles();
 
   const params = useParams();
@@ -135,12 +137,12 @@ function TournamentEdit(props) {
       .then((data) => {
         if (!id) history.push(Routes.TOURNAMENTS + "/" + data.id);
         else {
-          // TODO: Handle edit success.
+          snackbar.success('Torneo guardado exitosamente.');
           setSaving(false);
         }
       })
       .catch((err) => {
-        // TODO: Handle create error.
+        snackbar.error(err);
         setSaving(false);
       });
   };

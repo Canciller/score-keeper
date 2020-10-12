@@ -55,8 +55,8 @@ function StrokesPaper({
   const category = enabled && (player.category.description || "Sin categoría");
   const club = enabled && (player.club.name || "Sin club");
 
-  const maxHoles = tournament.holes;
-  //const maxStrokes = tournament.max_strokes;
+  const maxHoles = enabled && tournament.holes;
+  //const maxStrokes = enabled && tournament.max_strokes;
   const maxStrokes = 10;
 
   return (
