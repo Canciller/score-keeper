@@ -74,7 +74,7 @@ const schema = yup.object().shape({
     .typeError("El número de etapas es requerido.")
     .required("El número de etapas es requerido.")
     .positive("El número de etapas no puede ser menor a uno."),
-  blocked: yup.boolean(),
+  //blocked: yup.boolean(),
 });
 
 function TournamentEdit(props) {
@@ -208,16 +208,6 @@ function TournamentEdit(props) {
               variant="outlined"
               required
             />
-            <div className={clsx(classes.control, classes.checkbox)}>
-              <Typography>Bloqueado</Typography>
-              <Switch
-                inputRef={register}
-                name="blocked"
-                disabled={disabled}
-                defaultChecked={tournament.blocked}
-                color="primary"
-              />
-            </div>
             <div className={classes.submitWrapper}>
               <Button
                 disabled={saving}
@@ -244,3 +234,17 @@ function TournamentEdit(props) {
 }
 
 export default isAuth(TournamentEdit);
+
+
+/*
+            <div className={clsx(classes.control, classes.checkbox)}>
+              <Typography>Bloqueado</Typography>
+              <Switch
+                inputRef={register}
+                name="blocked"
+                disabled={disabled}
+                defaultChecked={tournament.blocked}
+                color="primary"
+              />
+            </div>
+            */

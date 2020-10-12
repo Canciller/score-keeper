@@ -68,12 +68,6 @@ function ListTournamentItem({
         open={Boolean(anchorEl)}
         onClose={onMenuClose}
       >
-        <MenuItem id={ACTION_LOCK} onClick={onMenuClose}>
-          <ListItemIcon>
-            {(locked && <LockOpenIcon />) || <LockIcon />}
-          </ListItemIcon>
-          <ListItemText primary={locked ? menuUnlockText : menuLockText} />
-        </MenuItem>
         <MenuItem id={ACTION_EDIT} onClick={onMenuClose}>
           <ListItemIcon>
             <EditIcon />
@@ -98,3 +92,13 @@ function ListTournamentItem({
 }
 
 export default ListTournamentItem;
+
+
+/*
+        <MenuItem id={ACTION_LOCK} onClick={onMenuClose}>
+          <ListItemIcon>
+            {(locked && <LockOpenIcon />) || <LockIcon />}
+          </ListItemIcon>
+          <ListItemText primary={locked ? menuUnlockText : menuLockText} />
+        </MenuItem>
+        */
