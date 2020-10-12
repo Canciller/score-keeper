@@ -16,7 +16,7 @@ var route = (path, Component) => {
 };
 
 export default [
-  route(Routes.HOME, Home),
+  route(Routes.HOME, SignIn),
   route(Routes.SIGNIN, SignIn),
   route(Routes.TOURNAMENTS, Tournaments),
   route(Routes.TOURNAMENT_CREATE, TournamentEdit),
